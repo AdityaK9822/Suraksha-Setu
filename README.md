@@ -52,6 +52,19 @@ contracts/  Solidity + Hardhat smart contracts
 firmware/   ESP32-S3 verification kiosk (Rust, esp-rs)
 ```
 
+## Roles & portals
+
+- **Society Admin** — create/manage society, register homeowners, verify documents, approve bank access requests.
+- **Homeowner** — upload property/loan documents, view property passport, manage consent & grants.
+- **Bank User** — search societies/homeowners, request document access, view approved records.
+
+## Document verification flow
+
+1. Homeowner uploads a document → stored off-chain, SHA-3 hash computed.
+2. Society admin reviews and marks status (Accepted for stated purpose / rejected).
+3. Bank requests access → society approves → homeowner consents → time-bound access grant issued.
+4. Kiosk (firmware) hashes a PDF with Keccak-256 and queries backend to verify against records.
+
 ## Getting Started
 
 Frontend: `cd frontend && npm install && npm run dev`
@@ -60,8 +73,28 @@ Contracts: `cd contracts && npm install && npx hardhat test`
 
 ## Team
 
-- Aditya (owner)
-- (team members to be added)
+- Aditya ([@AdityaK9822](https://github.com/AdityaK9822)) — owner
+- Deva ([@deva2407-eng](https://github.com/deva2407-eng))
+- Antara ([@Antaraaaa14](https://github.com/Antaraaaa14))
+- Aaroh ([@aarohwankh-dotcom](https://github.com/aarohwankh-dotcom))
+
+## Contributors
+
+Thanks to all contributors:
+
+- [@AdityaK9822](https://github.com/AdityaK9822)
+- [@deva2407-eng](https://github.com/deva2407-eng)
+- [@Antaraaaa14](https://github.com/Antaraaaa14)
+- [@aarohwankh-dotcom](https://github.com/aarohwankh-dotcom)
+
+## Documentation
+
+See the [docs/](./docs/) folder for per-module documentation:
+
+- [Backend](./docs/backend.md)
+- [Frontend](./docs/frontend.md)
+- [Smart Contracts](./docs/contracts.md)
+- [Firmware](./docs/firmware.md)
 
 ## License
 
