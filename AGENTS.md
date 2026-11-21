@@ -20,6 +20,7 @@ When the stack is finalized, update this section and remove "TBD".
 - Repo is PRIVATE. Do not make it public or share its contents externally.
 - Collaborators have write (push) access and can open PRs.
 - Never push directly to `main`. Always work on a feature branch and open a PR.
+  - Exception: the repo owner (Aditya) may push directly to `main`.
 - No force pushes, no rewriting published history, no deleting branches without approval.
 - PRs require at least one approving review before merge. Only the repo owner merges.
 - Keep commits small and focused; one logical change per commit.
