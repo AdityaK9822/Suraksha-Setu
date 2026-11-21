@@ -38,7 +38,7 @@ Documents are hashed using **SHA-3** before being recorded on-chain.
 - Frontend: Vite + React + TypeScript + Tailwind CSS
 - Backend: Node.js + Express + TypeScript (SQLite for prototype)
 - Smart contracts: Solidity + Hardhat
-- Firmware (prototype): Rust via esp-rs (ESP32-S3)
+- Firmware (prototype): Rust via esp-rs (ESP32-S3) — verification kiosk in `firmware/`
 - Hashing: SHA-3
 - Document storage: IPFS (Pinata)
 - Auth: JWT + bcrypt
@@ -49,7 +49,7 @@ Documents are hashed using **SHA-3** before being recorded on-chain.
 frontend/   Vite + React + TypeScript portal
 backend/    Express + TypeScript API (SQLite prototype)
 contracts/  Solidity + Hardhat smart contracts
-firmware/   ESP32-S3 prototype (Rust, deferred)
+firmware/   ESP32-S3 verification kiosk (Rust, esp-rs)
 ```
 
 ## Getting Started
