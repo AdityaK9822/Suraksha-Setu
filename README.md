@@ -33,12 +33,15 @@ Documents are hashed using **SHA-3** before being recorded on-chain.
 - Complete integration for **CHS**: NOC registration, builder contracts, society records.
 - Broader vision: general non-government document storage (NBFC, etc.).
 
-## Tech Stack (planned)
+## Tech Stack
 
-- Smart contracts (Solidity) on EVM chain
-- IPFS for document storage; on-chain hash for integrity
-- Web portal (frontend + backend)
-- SHA-3 document hashing
+- Frontend: Vite + React + TypeScript + Tailwind CSS
+- Backend: Node.js + Express + TypeScript (SQLite for prototype)
+- Smart contracts: Solidity + Hardhat
+- Firmware (prototype): Rust via esp-rs (ESP32-S3)
+- Hashing: SHA-3
+- Document storage: IPFS (Pinata)
+- Auth: JWT + bcrypt
 
 ## Getting Started
 

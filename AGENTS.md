@@ -7,14 +7,15 @@ Suraksha Setu — blockchain-based platform to securely store and verify non-gov
 issued documents (NBFC, etc.). Hackathon prototype focuses on Cooperative Housing
 Society (CHS) documents: NOCs, builder contracts, society records.
 
-## Tech stack (update as the project is decided)
-- Smart contracts: Solidity on an EVM-compatible chain
-- Document storage: IPFS; on-chain SHA-3 hash for integrity
-- Portal: TypeScript/JavaScript (frontend + backend) — framework TBD
-- Hashing: SHA-3
-- Package manager / runtime: TBD (Node.js)
-
-When the stack is finalized, update this section and remove "TBD".
+## Tech stack
+- Frontend: Vite + React 18 + TypeScript + Tailwind CSS (`frontend/`)
+- Backend: Node.js + Express + TypeScript, SQLite (better-sqlite3) for prototype, Zod validation (`backend/`)
+- Smart contracts: Solidity + Hardhat (TypeScript) (`contracts/`)
+- Firmware (prototype): Rust via esp-rs (esp-hal) (`firmware/`, deferred)
+- Hashing: SHA-3 (js-sha3 / @noble/hashes)
+- Auth: JWT + bcrypt
+- Document storage: IPFS (Pinata HTTP API)
+- Package manager: npm
 
 ## Repository access & restrictions
 - Repo is PRIVATE. Do not make it public or share its contents externally.
