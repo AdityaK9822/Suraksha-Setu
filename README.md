@@ -78,6 +78,15 @@ Contracts: `cd contracts && npm install && npx hardhat test`
 - Antara ([@Antaraaaa14](https://github.com/Antaraaaa14))
 - Aaroh ([@aarohwankh-dotcom](https://github.com/aarohwankh-dotcom))
 
+## Contributors
+
+Thanks to all contributors:
+
+- [@AdityaK9822](https://github.com/AdityaK9822)
+- [@deva2407-eng](https://github.com/deva2407-eng)
+- [@Antaraaaa14](https://github.com/Antaraaaa14)
+- [@aarohwankh-dotcom](https://github.com/aarohwankh-dotcom)
+
 ## Documentation
 
 See the [docs/](./docs/) folder for per-module documentation:
