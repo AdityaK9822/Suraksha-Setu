@@ -34,4 +34,4 @@ How to Tackle using Block-chain:
 
 
 
-Hashing Algo: SHA3
+Hashing Algo: Keccak-256 (EVM)

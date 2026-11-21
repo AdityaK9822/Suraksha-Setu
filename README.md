@@ -26,7 +26,7 @@ Navi Mumbai builder (ED, ₹50cr), Chinchpokli (₹42.96cr).
 
 ## Hashing
 
-Documents are hashed using **SHA-3** before being recorded on-chain.
+Documents are hashed using **Keccak-256** (Ethereum's native SHA-3-family hash) before being recorded on-chain.
 
 ## Prototype Scope
 
