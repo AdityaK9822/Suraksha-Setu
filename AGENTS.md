@@ -11,7 +11,7 @@ Society (CHS) documents: NOCs, builder contracts, society records.
 - Frontend: Vite + React 18 + TypeScript + Tailwind CSS (`frontend/`)
 - Backend: Node.js + Express + TypeScript, SQLite (better-sqlite3) for prototype, Zod validation (`backend/`)
 - Smart contracts: Solidity + Hardhat (TypeScript) (`contracts/`)
-- Firmware (prototype): Rust via esp-rs (esp-hal) (`firmware/`, deferred)
+- Firmware (prototype): Rust via esp-rs (esp-hal) (`firmware/`) — verification kiosk implemented
 - Hashing: SHA-3 (js-sha3 / @noble/hashes)
 - Auth: JWT + bcrypt
 - Document storage: IPFS (Pinata HTTP API)
