@@ -30,20 +30,20 @@ All cases below are news-reported allegations or arrests, not convictions.
 
 ## Design principles
 
-- **Hash-only on chain:** documents are hashed (SHA-3) before storing on-chain; plaintext documents never go on-chain (stored off-chain via IPFS).
+- **Hash-only on chain:** documents are hashed (Keccak-256, EVM) before storing on-chain; plaintext documents never go on-chain (stored off-chain via IPFS).
 - **Generic org model:** CHS is just the first organization type — treat "organization" as generic from day one so NBFCs and others plug in later.
 - **Verification gate:** community documents are trusted only after admin/authorized verification.
 
 ## Hashing algorithm
 
-SHA-3 (via js-sha3 / @noble/hashes).
+Keccak-256 (EVM) via @noble/hashes.
 
 ## Prototype mapping (repo structure)
 
 | Idea | Implementation |
 |---|---|
 | Portal + auth | `frontend/` (Vite + React) + `backend/` (Express, JWT + bcrypt) |
-| Hash on-chain | `contracts/` (Solidity + Hardhat), SHA-3 |
+| Hash on-chain | `contracts/` (Solidity + Hardhat), Keccak-256 (EVM) |
 | Off-chain document storage | IPFS via Pinata HTTP API |
 | Community verification | Backend admin roles + on-chain verification status |
 | Firmware (deferred) | `firmware/` (esp-rs) |

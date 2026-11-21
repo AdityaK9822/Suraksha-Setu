@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24;
 
 /// @title Suraksha Setu - document hash registry
-/// @notice Stores SHA-3 hashes of non-government documents with admin verification.
+/// @notice Stores Keccak-256 (EVM) hashes of non-government documents with admin verification.
 contract SurakshaSetu {
     struct Record {
         bytes32 docHash;

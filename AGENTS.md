@@ -12,7 +12,7 @@ Society (CHS) documents: NOCs, builder contracts, society records.
 - Backend: Node.js + Express + TypeScript, SQLite (better-sqlite3) for prototype, Zod validation (`backend/`)
 - Smart contracts: Solidity + Hardhat (TypeScript) (`contracts/`)
 - Firmware (prototype): Rust via esp-rs (esp-hal) (`firmware/`, deferred)
-- Hashing: SHA-3 (js-sha3 / @noble/hashes)
+- Hashing: Keccak-256 (EVM, not NIST SHA-3) via @noble/hashes
 - Auth: JWT + bcrypt
 - Document storage: IPFS (Pinata HTTP API)
 - Package manager: npm
@@ -64,8 +64,8 @@ Keep the PR description detailed but scannable: short bullets, no walls of text.
 - Do not paste real keys into issues, PRs, comments, or chat; use placeholders.
 - Validate and sanitize all external input (user input, on-chain data, IPFS content).
 - Community documents require admin/authorized verification before being trusted.
-- Hash documents with SHA-3 before storing on-chain; never store plaintext documents
-  on-chain.
+- Hash documents with Keccak-256 (EVM) before storing on-chain; never store plaintext
+  documents on-chain.
 - Principle of least privilege: minimal permissions, minimal contract surface.
 - Run dependency and secret scans before merging; keep dependencies updated.
 - Report security issues privately to the repo owner — do not open public issues.
