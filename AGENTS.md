@@ -30,6 +30,13 @@ Society (CHS) documents: NOCs, builder contracts, society records.
 - `feat/<short-slug>`, `fix/<short-slug>`, `docs/<short-slug>`, `chore/<short-slug>`,
   `refactor/<short-slug>`, `test/<short-slug>`.
 
+## Workflow
+- For every new issue, create a new branch from `main` before making changes.
+  Branch name follows the convention above and should reference the issue, e.g.
+  `feat/12-add-noc-registration` or `fix/7-hash-mismatch`.
+- Never commit directly to `main`; open a PR from the issue branch.
+- One issue = one branch = one PR. Close the issue via `Closes #N` in the PR body.
+
 ## Pull request format (easy to read, point-based)
 Title: `<type>: <short imperative summary>` (e.g. `feat: add NOC registration contract`)
 
