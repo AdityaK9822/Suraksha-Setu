@@ -7,12 +7,12 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "node --import tsx/esm --test src/hash.test.ts"
+    "test": "node --import tsx/esm --test src/*.test.ts"
   },
   "dependencies": {
     "@noble/hashes": "^2.4.0",
     "bcryptjs": "^2.4.3",
-    "better-sqlite3": "^11.5.0",
+    "better-sqlite3": "^13.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
@@ -28,5 +28,8 @@
     "@types/node": "^22.9.0",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
+  },
+  "allowScripts": {
+    "better-sqlite3@11.10.0": true
   }
 }
