@@ -43,9 +43,20 @@ Documents are hashed using **SHA-3** before being recorded on-chain.
 - Document storage: IPFS (Pinata)
 - Auth: JWT + bcrypt
 
+## Project Structure
+
+```
+frontend/   Vite + React + TypeScript portal
+backend/    Express + TypeScript API (SQLite prototype)
+contracts/  Solidity + Hardhat smart contracts
+firmware/   ESP32-S3 prototype (Rust, deferred)
+```
+
 ## Getting Started
 
-Setup instructions to be added as the project is built.
+Frontend: `cd frontend && npm install && npm run dev`
+Backend: `cd backend && npm install && npm run dev`
+Contracts: `cd contracts && npm install && npx hardhat test`
 
 ## Team
 
