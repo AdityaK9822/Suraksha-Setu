@@ -11,6 +11,12 @@ cache/
 typechain-types/
 target/
 *.db
+*.db-shm
+*.db-wal
 *.sqlite
 *.sqlite3
 *.tsbuildinfo
+uploads/
+backend/uploads/
+!.env.example
+!backend/.env.example
