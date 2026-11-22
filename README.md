@@ -72,6 +72,10 @@ Backend: `cd backend && npm install && npm run dev`
 Contracts: `cd contracts && npm install && npx hardhat test`
 Blockchain demo (standalone): see [`backend/BLOCKCHAIN.md`](./backend/BLOCKCHAIN.md)
 
+## Live Demo
+
+Deployed Link: https://suraksha-setu-app.vercel.app
+
 ## Team
 
 - Aditya ([@AdityaK9822](https://github.com/AdityaK9822)) — owner
