@@ -3,7 +3,7 @@
 Verification kiosk for NOC documents. The ESP32-S3 hosts an open Wi-Fi AP
 (`SurakshaSetu-Kiosk` by default) and serves a small page; a phone connects,
 scans the QR printed on a NOC (which resolves to the kiosk URL with the
-serial), or uploads the PDF. The device hashes the PDF with Keccak-256 and
+serial), or uploads the PDF. The device hashes the PDF with SHA3-256 and
 checks it against the backend, showing the result on the OLED.
 
 Hardware assumed: ESP32-S3 dev board + SSD1306 128x64 OLED on I2C
@@ -43,8 +43,9 @@ Build-time config (all optional, via env):
   `embassy_net::dhcpv4::Config::default()`.
 - Open AP only (secured soft-AP is not supported by esp-wifi 0.12).
 - No TLS/auth on the kiosk page — read-only verification on a softAP.
-- Tests (`cargo test`) run on the esp toolchain target; the Keccak vector
-  test pins the firmware hash to the backend's `@noble/hashes` output.
+- `cargo test` cannot run on the esp target (`can't find crate for test`). The
+  SHA3 vectors are pinned to the backend's `createHash('sha3-256')` output;
+  move `hash.rs` to a host-testable crate if regression coverage is needed.
 - shortcut: DHCP server is minimal (single pool, no NAK handling beyond
   reallocation); upgrade to a full DHCP implementation if lease churn
   matters.

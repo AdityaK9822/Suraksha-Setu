@@ -3,6 +3,7 @@ use embassy_net::tcp::TcpSocket;
 use embassy_time::Duration;
 use embedded_io_async::{Read, Write as IoWrite};
 use heapless::String;
+use log::info;
 
 use crate::backend;
 use crate::display;
@@ -34,21 +35,21 @@ document.getElementById('pf').onclick=async()=>{const f=document.getElementById(
  out.textContent=await r.text();};
 </script></body></html>"#;
 
-pub async fn run(stack: embassy_net::Stack<'static>) -> ! {
+pub async fn run(ap_stack: embassy_net::Stack<'static>, upstream: embassy_net::Stack<'static>) -> ! {
     let mut rx = [0u8; 4096];
     let mut tx = [0u8; 4096];
     loop {
-        let mut socket = TcpSocket::new(stack, &mut rx, &mut tx);
+        let mut socket = TcpSocket::new(ap_stack, &mut rx, &mut tx);
         socket.set_timeout(Some(Duration::from_secs(60)));
         if socket.accept(80).await.is_err() {
             continue;
         }
-        let _ = handle(stack, &mut socket).await;
+        let _ = handle(upstream, &mut socket).await;
         socket.close();
     }
 }
 
-async fn handle(stack: embassy_net::Stack<'static>, socket: &mut TcpSocket<'_>) -> Result<(), ()> {
+async fn handle(upstream: embassy_net::Stack<'static>, socket: &mut TcpSocket<'_>) -> Result<(), ()> {
     let mut buf = [0u8; 4096];
     let mut total = 0usize;
     loop {
@@ -88,18 +89,27 @@ async fn handle(stack: embassy_net::Stack<'static>, socket: &mut TcpSocket<'_>) 
     } else if method == "GET" && path.starts_with("/verify/serial/") {
         let raw = &path["/verify/serial/".len()..];
         let serial = url_decode(raw);
+        info!("serial lookup {:?}", serial.as_str());
         display::DISPLAY.signal(display::DisplayMsg::Busy);
-        let status = backend::verify_serial(&stack, serial.as_str()).await;
+        let status = backend::verify_serial(&upstream, serial.as_str()).await;
         let text = format_status(&status);
         update_display(&status);
         respond(socket, "200 OK", "text/plain", text.as_bytes()).await
     } else if method == "POST" && path == "/verify-file" {
+        info!(
+            "upload content-length={} buffered={}",
+            content_length,
+            total.saturating_sub(hdr_end + 4)
+        );
         display::DISPLAY.signal(display::DisplayMsg::Busy);
-        let mut hasher = hash::Keccak256::new();
-        let mut read_total = total.saturating_sub(hdr_end + 4);
+        let mut hasher = hash::Sha3_256::new();
+        let mut hashed = 0usize;
+        let read_total = total.saturating_sub(hdr_end + 4);
         if read_total > 0 {
             let avail = (hdr_end + 4 + read_total).min(total);
-            hasher.update(&buf[hdr_end + 4..avail]);
+            let chunk = &buf[hdr_end + 4..avail];
+            hasher.update(chunk);
+            hashed += chunk.len();
         }
         let mut remaining = content_length.saturating_sub(read_total);
         let mut tmp = [0u8; 4096];
@@ -107,13 +117,16 @@ async fn handle(stack: embassy_net::Stack<'static>, socket: &mut TcpSocket<'_>) 
             let to_read = remaining.min(tmp.len());
             let r = socket.read(&mut tmp[..to_read]).await.map_err(|_| ())?;
             if r == 0 {
+                info!("upload ended early after {} bytes", hashed);
                 break;
             }
             hasher.update(&tmp[..r]);
+            hashed += r;
             remaining = remaining.saturating_sub(r);
         }
         let h = hasher.finalize();
-        let status = backend::verify_hash(&stack, &h).await;
+        info!("hashed {} bytes -> {}", hashed, hash::hex_encode(&h));
+        let status = backend::verify_hash(&upstream, &h).await;
         let text = format_status(&status);
         update_display(&status);
         respond(socket, "200 OK", "text/plain", text.as_bytes()).await

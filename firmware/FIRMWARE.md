@@ -7,17 +7,17 @@ implemented in the firmware?**
 ## Is blockchain implemented in the firmware?
 
 **No.** The firmware contains no blockchain client, wallet, RPC endpoint, or
-on-chain logic. Its only cryptographic primitive is **Keccak-256 hashing**
-(`tiny-keccak`, the EVM/Solidity variant) used to compute a document
-fingerprint. Verification is delegated to the backend over plain HTTP; any
-on-chain check happens server-side.
+on-chain logic. Its only cryptographic primitive is **SHA3-256 hashing**
+(`tiny-keccak`) used to compute a document fingerprint. Verification is
+delegated to the backend over plain HTTP; any on-chain check happens
+server-side.
 
 Dependencies confirm this: `esp-hal`, `esp-wifi`, `embassy-net`, `tiny-keccak`,
 `ssd1306` — no `alloy`, `ethers`, `web3`, or similar.
 
-Keccak-256 is chosen specifically to match Solidity `keccak256` and the
-backend's `@noble/hashes` output, so the backend can compare the device's
-fingerprint against on-chain hashes without conversion.
+SHA3-256 (NIST) is chosen to match the backend's `createHash('sha3-256')` and
+the SHA-3 spec, so the backend can compare the device's fingerprint against
+registered hashes without conversion.
 
 ---
 
@@ -91,7 +91,7 @@ sequenceDiagram
     Phone->>Kiosk: POST /verify-file (raw PDF bytes)
     Kiosk->>OLED: Busy
     loop stream chunks
-        Kiosk->>Kiosk: Keccak256::update(chunk)<br/>(never buffers whole doc)
+        Kiosk->>Kiosk: Sha3_256::update(chunk)<br/>(never buffers whole doc)
     end
     Kiosk->>Kiosk: finalize() -> 32-byte hash
     Kiosk->>Backend: GET /verify/hash/0x<64 hex>
@@ -108,7 +108,7 @@ sequenceDiagram
 | `wifi.rs` | Configure AP (`SurakshaSetu-Kiosk`, open) + optional STA; reconnect loop |
 | `dhcp.rs` | Minimal DHCPv4 server for AP clients (pool 192.168.2.100–119) |
 | `server.rs` | HTTP/1.1 server on :80 — serves page, `/verify/serial/`, `/verify-file` |
-| `hash.rs` | Streaming Keccak-256 wrapper over `tiny-keccak` |
+| `hash.rs` | Streaming SHA3-256 wrapper over `tiny-keccak` |
 | `backend.rs` | HTTP client to backend `/verify/serial/` and `/verify/hash/` |
 | `display.rs` | SSD1306 OLED driver via embassy signal channel |
 
@@ -136,7 +136,7 @@ flowchart LR
 - DHCP server is minimal (single pool, no NAK handling beyond reallocation).
 - Open AP only (secured soft-AP not supported by esp-wifi 0.12).
 - No TLS/auth on the kiosk page.
-- `StackResources<4, 1>` arity assumes embassy-net 0.6.
+- `StackResources<4>` assumes embassy-net 0.6.
 
 ## What was not verified
 

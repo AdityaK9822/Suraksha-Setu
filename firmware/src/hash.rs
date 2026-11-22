@@ -1,12 +1,12 @@
-use tiny_keccak::{Hasher, Keccak};
+use tiny_keccak::{Hasher, Sha3};
 
-/// Streaming Keccak-256 (the EVM variant, matches `@noble/hashes` keccak_256
-/// and Solidity `keccak256`). Never buffers the whole document.
-pub struct Keccak256(Keccak);
+/// Streaming NIST SHA3-256, matching the backend's `createHash('sha3-256')`
+/// and the SHA-3 spec. Never buffers the whole document.
+pub struct Sha3_256(Sha3);
 
-impl Keccak256 {
+impl Sha3_256 {
     pub fn new() -> Self {
-        Self(Keccak::v256())
+        Self(Sha3::v256())
     }
     pub fn update(&mut self, data: &[u8]) {
         self.0.update(data);
@@ -18,7 +18,7 @@ impl Keccak256 {
     }
 }
 
-impl Default for Keccak256 {
+impl Default for Sha3_256 {
     fn default() -> Self {
         Self::new()
     }
@@ -39,33 +39,33 @@ mod tests {
     use super::*;
 
     #[test]
-    fn empty_matches_keccak() {
-        let h = Keccak256::new().finalize();
+    fn empty_matches_sha3() {
+        let h = Sha3_256::new().finalize();
         assert_eq!(
             hex_encode(&h).as_str(),
-            "c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+            "a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a"
         );
     }
 
     #[test]
     fn vector_matches_backend() {
-        let mut h = Keccak256::new();
+        let mut h = Sha3_256::new();
         h.update(b"suraksha-setu-vector");
         let out = h.finalize();
         assert_eq!(
             hex_encode(&out).as_str(),
-            "eb995b53230ec2be251fb66f194c17ee41b4eaccb5dc0ea9deec188dc3595335"
+            "8ff8d57cf22d193a4afbe6eb9242261719830e077791437977cebe28ae052c0c"
         );
     }
 
     #[test]
     fn streaming_matches_one_shot() {
         let data = b"the quick brown fox jumps over the lazy dog";
-        let mut a = Keccak256::new();
+        let mut a = Sha3_256::new();
         a.update(data);
         let one = a.finalize();
 
-        let mut b = Keccak256::new();
+        let mut b = Sha3_256::new();
         for chunk in data.chunks(7) {
             b.update(chunk);
         }

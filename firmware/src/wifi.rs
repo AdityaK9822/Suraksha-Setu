@@ -3,6 +3,7 @@ use esp_wifi::wifi::{
     AccessPointConfiguration, AuthMethod, ClientConfiguration, Configuration, WifiController,
 };
 use heapless::String;
+use log::info;
 
 pub async fn run(
     controller: &mut WifiController<'static>,
@@ -11,6 +12,7 @@ pub async fn run(
     sta_pass: &'static str,
 ) {
     let use_sta = !sta_ssid.is_empty();
+    let mut scanned = false;
 
     loop {
         if !controller.is_started().unwrap_or(false) {
@@ -35,8 +37,27 @@ pub async fn run(
             }
         }
 
+        if use_sta && !scanned {
+            scanned = true;
+            match controller.scan_n_async::<32>().await {
+                Ok((aps, count)) => {
+                    info!("scan: {} APs visible", count);
+                    for ap in aps.iter() {
+                        info!(
+                            "  AP {} ch={} rssi={} auth={:?}",
+                            ap.ssid.as_str(), ap.channel, ap.signal_strength, ap.auth_method
+                        );
+                    }
+                }
+                Err(e) => info!("scan failed: {:?}", e),
+            }
+        }
+
         if use_sta && !controller.is_connected().unwrap_or(false) {
-            let _ = controller.connect_async().await;
+            info!("connecting to STA SSID {:?}", sta_ssid);
+            if let Err(e) = controller.connect_async().await {
+                info!("connect failed: {:?}", e);
+            }
         }
 
         Timer::after(Duration::from_secs(5)).await;

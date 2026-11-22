@@ -1,7 +1,7 @@
 # Firmware Module
 
 ESP32-S3 verification kiosk for NOC documents. Rust via esp-rs (esp-hal).
-No blockchain client on device — only Keccak-256 hashing + backend HTTP queries.
+No blockchain client on device — only SHA3-256 hashing + backend HTTP queries.
 
 ## Structure
 
@@ -12,7 +12,7 @@ firmware/
 │   ├── wifi.rs     # AP (SurakshaSetu-Kiosk, open) + optional STA
 │   ├── dhcp.rs     # minimal DHCPv4 server for AP clients
 │   ├── server.rs   # HTTP/1.1 server on :80
-│   ├── hash.rs     # streaming Keccak-256 wrapper
+│   ├── hash.rs     # streaming SHA3-256 wrapper
 │   ├── backend.rs  # HTTP client to backend verify endpoints
 │   └── display.rs  # SSD1306 OLED driver via embassy signal
 ├── FIRMWARE.md     # detailed architecture
@@ -53,7 +53,7 @@ Leave `KIOSK_STA_SSID` unset for AP-only mode.
 
 - By serial: phone GETs `/verify/serial/:serial` on kiosk -> kiosk queries backend
   `/verify/serial/:serial` -> result on OLED + text response.
-- By PDF: phone POSTs raw PDF to `/verify-file` -> kiosk streams Keccak-256 hash
+- By PDF: phone POSTs raw PDF to `/verify-file` -> kiosk streams SHA3-256 hash
   (never buffers whole doc) -> queries backend `/verify/hash/0x...` -> result.
 
 ## Known limits
@@ -61,4 +61,4 @@ Leave `KIOSK_STA_SSID` unset for AP-only mode.
 - Open AP only (no secured soft-AP in esp-wifi 0.12).
 - No TLS/auth on kiosk page (read-only verification).
 - Minimal DHCP server (single pool, no NAK handling beyond reallocation).
-- `StackResources<4, 1>` assumes embassy-net 0.6.
+- `StackResources<4>` assumes embassy-net 0.6.

@@ -4,6 +4,7 @@ use embassy_net::tcp::TcpSocket;
 use embassy_time::Duration;
 use embedded_io_async::{Read, Write as IoWrite};
 use heapless::String;
+use log::{info, warn};
 
 const BACKEND_HOST: &str = match option_env!("KIOSK_BACKEND_HOST") { Some(v) => v, None => "192.168.1.50" };
 const BACKEND_PORT: &str = match option_env!("KIOSK_BACKEND_PORT") { Some(v) => v, None => "4000" };
@@ -33,6 +34,7 @@ pub async fn verify_hash(stack: &embassy_net::Stack<'static>, hash: &[u8; 32]) -
 async fn get_status(stack: &embassy_net::Stack<'static>, path: &str) -> Status {
     let ip: Ipv4Addr = BACKEND_HOST.parse().unwrap_or(Ipv4Addr::new(192, 168, 1, 50));
     let port: u16 = BACKEND_PORT.parse().unwrap_or(4000);
+    info!("backend GET {}:{} {:?}", ip, port, path);
 
     let mut rx = [0u8; 1024];
     let mut tx = [0u8; 1024];
@@ -40,6 +42,7 @@ async fn get_status(stack: &embassy_net::Stack<'static>, path: &str) -> Status {
     socket.set_timeout(Some(Duration::from_secs(10)));
 
     if socket.connect((ip, port)).await.is_err() {
+        warn!("backend connect {}:{} failed", ip, port);
         return Status::Error;
     }
 
@@ -75,6 +78,11 @@ async fn get_status(stack: &embassy_net::Stack<'static>, path: &str) -> Status {
     let _ = socket.close();
 
     let body = find_body(&resp);
+    info!(
+        "backend resp {} bytes: {:?}",
+        resp.len(),
+        core::str::from_utf8(body).unwrap_or("<non-utf8>")
+    );
     parse_status(body)
 }
 

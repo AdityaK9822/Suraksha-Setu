@@ -1,6 +1,7 @@
 use core::net::Ipv4Addr;
 use embassy_net::udp::UdpSocket;
 use embassy_time::{Duration, Timer};
+use log::{info, warn};
 
 const POOL_START: u8 = 100;
 const POOL_END: u8 = 119;
@@ -62,6 +63,7 @@ pub async fn run(stack: embassy_net::Stack<'static>) -> ! {
 
         if msg_type == 1 {
             let ip_octet = allocate(&mut leases, &mut nleases, chaddr);
+            info!("DHCP DISCOVER {:02x?} -> 192.168.2.{}", chaddr, ip_octet);
             let mut reply = [0u8; 300];
             build_reply(&mut reply, &xid, chaddr, ip_octet, 2);
             let _ = socket
@@ -89,6 +91,10 @@ pub async fn run(stack: embassy_net::Stack<'static>) -> ! {
                 i += 2 + len;
             }
             let ip_octet = req_ip.unwrap_or_else(|| allocate(&mut leases, &mut nleases, chaddr));
+            info!(
+                "DHCP REQUEST {:02x?} requested={:?} -> 192.168.2.{}",
+                chaddr, req_ip, ip_octet
+            );
             let mut reply = [0u8; 300];
             build_reply(&mut reply, &xid, chaddr, ip_octet, 5);
             let _ = socket
@@ -106,6 +112,7 @@ fn allocate(leases: &mut [([u8; 6], u8); 16], n: &mut usize, mac: &[u8]) -> u8 {
     }
     let octet = POOL_START + (*n as u8);
     if octet > POOL_END {
+        warn!("DHCP pool exhausted, reusing 192.168.2.{}", POOL_START);
         return POOL_START;
     }
     let mut m = [0u8; 6];
@@ -113,6 +120,11 @@ fn allocate(leases: &mut [([u8; 6], u8); 16], n: &mut usize, mac: &[u8]) -> u8 {
     if *n < 16 {
         leases[*n] = (m, octet);
         *n += 1;
+    } else {
+        warn!(
+            "DHCP lease table full, handing out unrecorded 192.168.2.{}",
+            octet
+        );
     }
     octet
 }

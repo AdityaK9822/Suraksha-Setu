@@ -17,6 +17,7 @@ use esp_alloc as _;
 use esp_backtrace as _;
 use esp_hal::{clock::CpuClock, rng::Rng, timer::timg::TimerGroup};
 use esp_println::println;
+use log::info;
 use static_cell::StaticCell;
 
 macro_rules! mk_static {
@@ -32,6 +33,7 @@ const STA_PASS: &str = match option_env!("KIOSK_STA_PASS") { Some(v) => v, None 
 
 #[esp_hal_embassy::main]
 async fn main(spawner: Spawner) {
+    esp_println::logger::init_logger(log::LevelFilter::Info);
     let peripherals = esp_hal::init(esp_hal::Config::default().with_cpu_clock(CpuClock::max()));
     esp_alloc::heap_allocator!(72 * 1024);
 
@@ -72,8 +74,16 @@ async fn main(spawner: Spawner) {
     spawner.spawn(connection_task(controller, AP_SSID, STA_SSID, STA_PASS)).ok();
     spawner.spawn(net_task_ap(ap_runner)).ok();
     spawner.spawn(net_task_sta(sta_runner)).ok();
+    spawner.spawn(sta_info_task(*sta_stack)).ok();
     spawner.spawn(dhcp_task(*ap_stack)).ok();
-    spawner.spawn(server_task(*ap_stack)).ok();
+    let upstream = if STA_SSID.is_empty() { *ap_stack } else { *sta_stack };
+    spawner.spawn(server_task(*ap_stack, upstream)).ok();
+
+    info!(
+        "AP 192.168.2.1/24, STA configured: {}, backend via {}",
+        !STA_SSID.is_empty(),
+        if STA_SSID.is_empty() { "AP" } else { "STA" }
+    );
 
     // I2C for the SSD1306 OLED (SDA=GPIO8, SCL=GPIO9 — adjust to your board)
     let i2c = esp_hal::i2c::master::I2c::new(
@@ -114,13 +124,21 @@ async fn net_task_sta(runner: &'static mut embassy_net::Runner<'static, esp_wifi
 }
 
 #[embassy_executor::task]
+async fn sta_info_task(stack: embassy_net::Stack<'static>) {
+    stack.wait_config_up().await;
+    if let Some(cfg) = stack.config_v4() {
+        info!("STA up: {} gw={:?}", cfg.address, cfg.gateway);
+    }
+}
+
+#[embassy_executor::task]
 async fn dhcp_task(stack: embassy_net::Stack<'static>) {
     dhcp::run(stack).await
 }
 
 #[embassy_executor::task]
-async fn server_task(stack: embassy_net::Stack<'static>) {
-    server::run(stack).await
+async fn server_task(ap_stack: embassy_net::Stack<'static>, upstream: embassy_net::Stack<'static>) {
+    server::run(ap_stack, upstream).await
 }
 
 #[embassy_executor::task]
