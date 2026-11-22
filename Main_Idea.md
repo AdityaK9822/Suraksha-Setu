@@ -43,7 +43,7 @@ SHA-3 (via js-sha3 / @noble/hashes).
 | Idea | Implementation |
 |---|---|
 | Portal + auth | `frontend/` (Vite + React) + `backend/` (Express, JWT + bcrypt) |
-| Hash on-chain | `contracts/` (Solidity + Hardhat), SHA-3 |
+| Hash on-chain | `contracts/` (Solidity + Hardhat), SHA-3; standalone backend client `backend/src/blockchain.ts` |
 | Off-chain document storage | IPFS via Pinata HTTP API |
 | Community verification | Backend admin roles + on-chain verification status |
 | Firmware (deferred) | `firmware/` (esp-rs) |

@@ -7,7 +7,7 @@ authenticity. This hackathon prototype focuses on Cooperative Housing Society
 
 ## Modules
 
-- [Backend](./backend.md) — Express + TypeScript API, SQLite, JWT auth, document storage
+- [Backend](./backend.md) — Express + TypeScript API, SQLite, JWT auth, document storage, standalone blockchain anchoring
 - [Frontend](./frontend.md) — Vite + React + TypeScript portal
 - [Smart Contracts](./contracts.md) — Solidity + Hardhat document hash registry
 - [Firmware](./firmware.md) — ESP32-S3 verification kiosk (Rust, esp-rs)
@@ -25,7 +25,8 @@ firmware/ (ESP32-S3 kiosk)  --HTTP-->  backend/ (verify endpoints)
 
 - Documents hashed with SHA-3 before any on-chain record; plaintext never goes on-chain.
 - Community documents require admin/authorized verification before being trusted.
-- Firmware performs no blockchain logic — only Keccak-256 hashing + backend queries.
+- Firmware performs no blockchain logic — only SHA3-256 hashing + backend queries.
+- Standalone backend blockchain client (`backend/src/blockchain.ts`) anchors hashes on-chain via a demo CLI; not wired into the API.
 
 ## Getting started
 

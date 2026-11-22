@@ -63,13 +63,14 @@ firmware/   ESP32-S3 verification kiosk (Rust, esp-rs)
 1. Homeowner uploads a document → stored off-chain, SHA-3 hash computed.
 2. Society admin reviews and marks status (Accepted for stated purpose / rejected).
 3. Bank requests access → society approves → homeowner consents → time-bound access grant issued.
-4. Kiosk (firmware) hashes a PDF with Keccak-256 and queries backend to verify against records.
+4. Kiosk (firmware) hashes a PDF with SHA3-256 and queries backend to verify against records.
 
 ## Getting Started
 
 Frontend: `cd frontend && npm install && npm run dev`
 Backend: `cd backend && npm install && npm run dev`
 Contracts: `cd contracts && npm install && npx hardhat test`
+Blockchain demo (standalone): see [`backend/BLOCKCHAIN.md`](./backend/BLOCKCHAIN.md)
 
 ## Team
 

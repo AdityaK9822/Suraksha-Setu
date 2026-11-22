@@ -12,10 +12,14 @@ backend/
 │   ├── db.ts        # SQLite schema + demo seed data
 │   ├── auth.ts      # JWT sign/verify, middleware, roles, activity/notifications
 │   ├── utils.ts     # cuid, genId, SHA-3 hash, multipart parser
+│   ├── blockchain.ts # standalone Ethereum client (register/verify/getRecord)
 │   └── routes.ts    # All API routes
+├── scripts/
+│   └── anchor-demo.ts # CLI to anchor a file hash on-chain (demo)
 ├── uploads/         # Stored document files
 ├── data.db          # SQLite database (prototype)
-├── .env.example     # PORT, JWT_SECRET, DB_PATH, UPLOAD_DIR
+├── .env.example     # PORT, JWT_SECRET, DB_PATH, UPLOAD_DIR, RPC_URL, PRIVATE_KEY, CONTRACT_ADDRESS
+├── BLOCKCHAIN.md    # standalone blockchain anchoring guide
 └── package.json
 ```
 
@@ -27,6 +31,9 @@ backend/
 | `JWT_SECRET` | dev secret | JWT signing secret (change in prod) |
 | `DB_PATH` | `./data.db` | SQLite file path |
 | `UPLOAD_DIR` | `./uploads` | Document storage directory |
+| `RPC_URL` | `http://127.0.0.1:8545` | Ethereum node (standalone blockchain module) |
+| `PRIVATE_KEY` | — | Signer key for on-chain transactions (demo only) |
+| `CONTRACT_ADDRESS` | — | Deployed `SurakshaSetu` registry address |
 
 ## Run
 
@@ -36,6 +43,7 @@ npm install
 npm run dev      # tsx watch src/index.ts
 npm run build    # tsc
 npm start        # node dist/index.js
+npm run anchor:demo -- <file|0x-hash>   # standalone on-chain anchor (see BLOCKCHAIN.md)
 ```
 
 ## Auth
@@ -81,6 +89,12 @@ Core tables: `users`, `societies`, `society_admins`, `society_office_bearers`,
 - Each document SHA-3 hashed (`sha3Hash`, Node crypto `sha3-256`, `0x`-prefixed).
 - Versioning via `document_versions`; status flow: Uploaded -> Under/Pending Review
   -> Accepted for stated purpose / rejected.
+
+## Blockchain anchoring (standalone)
+
+`src/blockchain.ts` exposes `registerHash`, `verifyHash`, and `getRecord` against the
+`SurakshaSetu` registry contract. It is **not wired into the API** — upload/verify
+routes are unchanged. Exercise it via `npm run anchor:demo`; see `BLOCKCHAIN.md`.
 
 ## Seed data
 

@@ -37,3 +37,9 @@ npm run compile      # hardhat compile
 npm test             # hardhat test
 npm run deploy:local # hardhat run scripts/deploy.ts --network localhost
 ```
+
+## Backend client (standalone)
+
+A standalone client lives in `backend/src/blockchain.ts` (`registerHash`/`verifyHash`/
+`getRecord`) with a demo CLI `backend/scripts/anchor-demo.ts`. It is not wired into the
+API. See `backend/BLOCKCHAIN.md`.
