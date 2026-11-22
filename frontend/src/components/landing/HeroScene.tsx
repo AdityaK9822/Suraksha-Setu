@@ -18,7 +18,7 @@ const SHEETS: ReadonlyArray<readonly [title: string, subtitle: string]> = [
   ['SALE AGREEMENT', 'Agreement for sale'],
   ['REGISTRATION RECORD', 'Sub-registrar entry'],
   ['INDEX II', 'Extract of property register'],
-  ['PROPERTY TAX RECEIPT', 'Municipal tax paid'],
+  ['NOC', 'No objection certificate'],
   ['SOCIETY SHARE CERTIFICATE', 'Co-operative housing society'],
   ['BANK LOAN STATEMENT', 'Home loan account'],
 ]

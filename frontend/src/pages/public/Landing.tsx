@@ -15,11 +15,11 @@ const NAV_LINKS = [
 ]
 
 const PROBLEMS = [
-  { numeral: 'i', text: 'Property documents are scattered across physical files and digital folders.' },
-  { numeral: 'ii', text: 'Homeowners struggle to organise important records.' },
-  { numeral: 'iii', text: 'Housing societies manage fragmented member information.' },
-  { numeral: 'iv', text: 'Banks need authorised access to relevant documents.' },
-  { numeral: 'v', text: 'Sharing documents without clear consent creates privacy concerns.' },
+  { numeral: 'i', text: 'A single flat is sold or mortgaged to multiple parties — the same property encumbered more than once.' },
+  { numeral: 'ii', text: 'Owner identities are forged to sell a property or raise a loan against it.' },
+  { numeral: 'iii', text: 'Hidden loans surface only during loan formalities or after a bank seizes the property.' },
+  { numeral: 'iv', text: 'NOCs and society records are paper-based and easy to fabricate — there is no tamper-proof register.' },
+  { numeral: 'v', text: 'Buyers, lenders and societies discover the fraud too late to stop it.' },
 ]
 
 const STEPS = [
@@ -28,24 +28,24 @@ const STEPS = [
     text: 'Buildings, flats and office bearers are set up once, creating a trusted directory.',
   },
   {
-    title: 'Homeowners organise their records',
-    text: 'Property, loan and society documents are uploaded and categorised in one workspace.',
+    title: 'Documents are hashed and anchored on-chain',
+    text: 'Every upload is SHA-3 hashed and the hash recorded on the blockchain; the document itself stays off-chain.',
   },
   {
-    title: 'Banks request specific documents',
-    text: 'A request names the documents, the purpose and an expiry date.',
+    title: 'Society verifies community documents',
+    text: 'NOCs and society records are trusted only after an admin or authorised person verifies them.',
   },
   {
-    title: 'Society authorisation and homeowner consent',
-    text: 'Access opens only when both approve, and only for the time requested.',
+    title: 'Banks verify, then request with consent',
+    text: 'A bank checks the on-chain hash and gains time-limited access once the society approves and the homeowner consents.',
   },
 ]
 
 const PRIVACY_POINTS = [
   { title: 'Specific requests', text: 'Banks ask for named documents, never blanket access.' },
-  { title: 'Two approvals', text: 'Society approval and homeowner consent are separate steps.' },
+  { title: 'Verified, then consented', text: 'Society verification and homeowner consent are separate steps.' },
   { title: 'Time-limited', text: 'Every grant carries an expiry and then closes.' },
-  { title: 'Transparent history', text: 'Each request, approval and view is logged for everyone involved.' },
+  { title: 'Immutable history', text: 'Each request, approval and view is logged, and every hash is checkable on-chain.' },
   { title: 'Future control', text: 'Homeowners can revoke access whenever they choose.' },
 ]
 
@@ -122,9 +122,9 @@ export default function Landing() {
         <SectionLabel>01 · THE PROBLEM</SectionLabel>
         <Reveal>
           <h2 className={`${h2Base} max-w-[900px] text-[clamp(34px,6vw,84px)] leading-none`}>
-            Property records shouldn’t be{' '}
+            Property fraud is discovered{' '}
             <em className="bg-[linear-gradient(transparent_62%,rgba(213,180,119,.55)_0)] not-italic text-bhuid-forest">
-              difficult to find.
+              too late.
             </em>
           </h2>
         </Reveal>
@@ -145,7 +145,7 @@ export default function Landing() {
         <SectionLabel onDark>02 · THE SOLUTION</SectionLabel>
         <Reveal>
           <h2 className={`${h2Base} max-w-[800px] text-[clamp(30px,5vw,68px)]`}>
-            One connection. Three stakeholders. Greater trust.
+            One tamper-proof register. Three stakeholders. Verified trust.
           </h2>
         </Reveal>
         <NetworkDiagram />

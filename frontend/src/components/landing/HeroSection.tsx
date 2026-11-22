@@ -156,14 +156,14 @@ export default function HeroSection() {
             <br />
             Your Documents.
             <br />
-            Your Peace of Mind.
+            Verified On-Chain.
           </h1>
           <p
             ref={subRef}
             className="mb-[26px] mt-5 max-w-[520px] text-[clamp(14px,1.3vw,17px)] leading-[1.6] text-[#d9d6c9] opacity-0"
           >
-            One trusted space to organise property records, connect housing societies and securely share authorised
-            information with financial institutions.
+            A blockchain-backed registry where property and society documents are hashed on-chain and verified before
+            anyone trusts them — so NOC and loan fraud is caught before it costs anyone.
           </p>
           <div ref={ctaRef} className="flex flex-wrap gap-3.5 opacity-0">
             <LandingButton primary href="#demo">

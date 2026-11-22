@@ -1,9 +1,9 @@
 import { useReducedMotion } from 'framer-motion'
 
 const NODES = [
-  { letter: 'S', title: 'Housing Societies', text: 'Register the community and approve who may ask.', left: '50%', top: '18%' },
-  { letter: 'H', title: 'Homeowners', text: 'Organise records and give consent, document by document.', left: '18%', top: '80%' },
-  { letter: 'B', title: 'Banks', text: 'Request specific documents for a stated purpose.', left: '82%', top: '80%' },
+  { letter: 'S', title: 'Housing Societies', text: 'Verify NOCs and community documents before anyone trusts them.', left: '50%', top: '18%' },
+  { letter: 'H', title: 'Homeowners', text: 'Hash documents on-chain and give consent, document by document.', left: '18%', top: '80%' },
+  { letter: 'B', title: 'Banks', text: 'Verify the on-chain hash before lending on a property.', left: '82%', top: '80%' },
 ] as const
 
 /** Three stakeholders joined by a dashed triangle with a dot travelling around it. */
