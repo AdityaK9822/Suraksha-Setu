@@ -163,7 +163,7 @@ export default function HeroSection() {
             className="mb-[26px] mt-5 max-w-[520px] text-[clamp(14px,1.3vw,17px)] leading-[1.6] text-[#d9d6c9] opacity-0"
           >
             A blockchain-backed registry where property and society documents are hashed on-chain and verified before
-            anyone trusts them — so NOC and loan fraud is caught before it costs anyone.
+            anyone trusts them, so NOC and loan fraud is caught before it costs anyone.
           </p>
           <div ref={ctaRef} className="flex flex-wrap gap-3.5 opacity-0">
             <LandingButton primary href="#demo">

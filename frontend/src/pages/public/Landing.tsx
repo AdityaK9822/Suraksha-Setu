@@ -15,10 +15,10 @@ const NAV_LINKS = [
 ]
 
 const PROBLEMS = [
-  { numeral: 'i', text: 'A single flat is sold or mortgaged to multiple parties — the same property encumbered more than once.' },
+  { numeral: 'i', text: 'A single flat is sold or mortgaged to multiple parties, the same property encumbered more than once.' },
   { numeral: 'ii', text: 'Owner identities are forged to sell a property or raise a loan against it.' },
   { numeral: 'iii', text: 'Hidden loans surface only during loan formalities or after a bank seizes the property.' },
-  { numeral: 'iv', text: 'NOCs and society records are paper-based and easy to fabricate — there is no tamper-proof register.' },
+  { numeral: 'iv', text: 'NOCs and society records are paper-based and easy to fabricate, there is no tamper-proof register.' },
   { numeral: 'v', text: 'Buyers, lenders and societies discover the fraud too late to stop it.' },
 ]
 
